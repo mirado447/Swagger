@@ -2,53 +2,51 @@ openapi: 3.0.1
 info:
   title: STD21081
   description: Hello World !
- 
+
   version: 1.0.0
 externalDocs:
- 
   url: http://swagger.io
 servers:
-
-- url: http://std21081.com
+  - url: http://std21081.com
 tags:
-- name: Students
-  
-- name: Courses
+  - name: Students
+
+  - name: Courses
 paths:
   /Students:
     get:
       tags:
-      - Students
+        - Students
       summary: Get all students
       description: Get all students with details
       operationId: updatePet
-      parameters: 
-      - name: page
-        in: query
-        schema: 
-          type: integer
-      - name: page_size
-        in: query
-        required: true
-        schema:
-          type: integer
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: List of students
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Creatstudents' 
+                $ref: "#/components/schemas/Creatstudents"
                 type: object
                 additionalProperties:
                   type: integer
                   format: int32
-        400: 
+        400:
           description: Bad request
           content: {}
     post:
       tags:
-      - Students
+        - Students
       summary: Create new students
       description: Create new students from an array
       requestBody:
@@ -56,7 +54,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Students'    
+              $ref: "#/components/schemas/Students"
         required: true
       responses:
         200:
@@ -64,16 +62,158 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Creatstudents' 
+                $ref: "#/components/schemas/Creatstudents"
                 type: object
                 additionalProperties:
                   type: integer
                   format: int32
-     
-  
+
+  /Courses:
+    get:
+      tags:
+        - Courses
+      summary: Get all courses
+      description: Get all courses with details
+      parameters:
+        - name: Courses
+          in: path
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        200:
+          description: List of cours
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Courses"
+                type: object
+                additionalProperties:
+                  type: integer
+                  format: int32
+        400:
+          description: Bad request
+          content: {}
+    post:
+      tags:
+        - Courses
+      summary: Create new courses
+      description: Create new couses
+      requestBody:
+        description: courses to be created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCours"
+        required: true
+      responses:
+        200:
+          description: List of couses
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedCours"
+                type: object
+                additionalProperties:
+                  type: integer
+                  format: int32
+    put:
+      tags:
+        - Courses
+      summary: Uptade an existing Course
+      description: Uptade an Course
+      operationId: UptadeCourse
+      requestBody:
+        required: true
+        description: information to update
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCourse"
+      responses:
+        "200":
+          description: Course Uptaded
+  /Courses/{id}:
+    get:
+      tags:
+        - Courses
+      summary: Get Courses with specific id
+      operationId: getCoursesById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of Courses
+          schema:
+            type: string
+      responses:
+        "200":
+          description: succes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateCourse"
+        "400":
+          description: id not found
+    delete:
+      tags:
+        - Courses
+      summary: Delete Courses with specific id
+      operationId: deleteCourseById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of Courses
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Courses deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateCourse"
+  /Students/{id}:
+    get:
+      tags:
+        - Students
+      summary: Get Students with specific id
+      operationId: getStudentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of Students
+          schema:
+            type: string
+      responses:
+        "200":
+          description: succes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Courses"
+    delete:
+      tags:
+        - Students
+      summary: Delete Students with specific id
+      operationId: DeleteStudentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of Students
+          schema:
+            type: string
+      responses:
+        "200":
+          description: students deleted
+
 components:
   schemas:
-   Creatstudents: 
+    Creatstudents:
       type: object
       properties:
         id:
@@ -83,11 +223,47 @@ components:
           type: string
       xml:
         name: Category
-   Students:
+    Students:
       type: object
       properties:
         name:
           type: string
+    Courses:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    CreateCours:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Prog2
       xml:
         name: Category
-        
+    CreatedCours:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: Prog2
+      xml:
+        name: Category
+    UpdateCourse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        teacher:
+          type: string
+        date:
+          type: string
